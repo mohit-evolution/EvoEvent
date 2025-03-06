@@ -1,0 +1,10 @@
+body {
+  background-color:#FFF1EA !important;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ::after, ::before {
+  box-sizing: border-box !important; 
+} */
