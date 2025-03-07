@@ -1,9 +1,11 @@
 import './Event.css';
 import { FaPlus } from "react-icons/fa6";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { EditIcon, DeleteIcon, ListView, SortView, EchoEvent, Vector, Search, DeleteImage, Previousbutton, pagination } from '../share/image';
 import axios from 'axios'
+import SearchIn from './Search';
+import ListViewIn from './ListViewIn';
 import * as Yup from 'yup';
 
 const EventList = () => {
@@ -14,18 +16,52 @@ const EventList = () => {
     const [deleteModal, setDeleteModel] = useState(false)
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
+    const [categories, setCategory] = useState([])
+    const fileInputRef = useRef(null);
+    const [filteredEvents, setFilteredEvents] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // Pagination state
+    const [searchQuery, setSearchQuery] = useState("");
+    const [listview, setListView] = useState(false)
+
+    const fetchCategory = async () => {
+        const catresp = await axios.get(`http://localhost:5000/api/category/getcategory`)
+        setCategory(catresp.data)
+    }
+
+    const handleClick = () => {
+        fileInputRef.current.value = "";
+        fileInputRef.current.click();
+    };
+
+    const handleListView = () => {
+        setListView(true)
+    }
 
     const fetchData = async () => {
         try {
             const response = await axios.get(`http://localhost:5000/api/events/getEvent`);
             setEventdata(response.data);
+            setFilteredEvents(response.data)
         } catch (error) {
             console.log(error);
         }
     };
 
+    const handleSearchChange = (e) => {
+        const query = e.target.value.toLowerCase();
+        setSearchQuery(query);
+        setCurrentPage(1);
 
-   
+        if (query === "") {
+            setFilteredEvents(eventdata);
+        } else {
+            const filtered = eventdata.filter(event =>
+                event.eventName.toLowerCase().includes(query) ||
+                event?.category?.name.toLowerCase().includes(query)
+            );
+            setFilteredEvents(filtered);
+        }
+    };
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -72,8 +108,8 @@ const EventList = () => {
 
     useEffect(() => {
         fetchData();
+        fetchCategory()
     }, []);
-
 
     const formik = useFormik({
         initialValues: {
@@ -123,40 +159,42 @@ const EventList = () => {
     useEffect(() => {
         if (editEvent) {
             console.log("Raw eventDate from DB:", editEvent.eventDate);
-    
+
             formik.setValues({
                 eventName: editEvent.eventName || '',
-                eventDate: editEvent.eventDate 
-                    ? new Date(editEvent.eventDate).toISOString().split('T')[0] 
-                    : '',  
-                category: editEvent.category || '',
+                eventDate: editEvent.eventDate
+                    ? new Date(editEvent.eventDate).toISOString().split('T')[0]
+                    : '',
+                category: editEvent.category._id || '',
                 imageFile: editEvent.imageFile || ''
             });
-    
+
             if (editEvent.image) {
                 setPreviewImage(`http://localhost:5000/${editEvent.image}`);
             }
-          
+
         }
     }, [editEvent]);
-    
-    
+
+
+    console.log(editEvent, "edit Event of data")
+
 
     return (
         <>
             <div className="container">
                 <div className='d-card mt-3 mb-3'>
-                    
+
                     <div className='d-card-data'>
                         <div className='echo-event'>
                             <img src={EchoEvent}
                                 className='img-fluid' />
                         </div>
                         <div className='search-contact-event'>
-                            <div className="search-event">
-                                <img src={Search} className="search-icon" alt="Search Icon" />
-                                <input type="text" id="search" name="search" placeholder="Search" className="search-input" />
-                            </div>
+                            <SearchIn
+                                searchQuery={searchQuery}
+                                handleSearchChange={handleSearchChange}
+                            />
                             <div>
                                 <img src={Vector} className='img-fluid contact-event mt-1' />
                             </div>
@@ -181,7 +219,7 @@ const EventList = () => {
                         </div>
                     </button>
                     <button className="list-event-btn">
-                        <div className='event-filter-layout'>
+                        <div className='event-filter-layout' onClick={handleListView}>
                             <div>
                                 <img src={ListView}
                                 />
@@ -200,10 +238,65 @@ const EventList = () => {
                     </button>
 
                 </div>
+                {
 
-                <div className="row mt-3">
-                    {eventdata.length > 0 ? (
-                        eventdata.map((event) => (
+                    listview ? (
+                        <>
+                            <ListViewIn
+                            filteredEvents={filteredEvents}
+                            handleEdit={handleEdit}
+                            handleDeleteModel={handleDeleteModel}
+                            />
+
+                        </>
+                    ) :
+                        (
+                            <>
+                                <div className="row mt-3">
+                                    {filteredEvents.length > 0 ? (
+                                        filteredEvents?.map((event) => (
+                                            <div key={event._id} className="col-md-4 col-sm-4 col-lg-4 mb-3">
+                                                <div className="event-card">
+                                                    {event.image && (
+                                                        <img src={`http://localhost:5000/${event.image}`}
+                                                            alt={event.eventName}
+                                                            className="img-fluid mb-2"
+                                                            style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }}
+                                                        />
+                                                    )}
+                                                    <div className='event-card-text'>
+                                                        <h5>{event.eventName}</h5>
+
+                                                        <div>
+                                                            <img src={EditIcon} alt="Edit" style={{ width: "20px", marginRight: "5px", cursor: "pointer" }}
+                                                                onClick={() => handleDeleteModel(event._id)}
+                                                            />
+                                                            <img src={DeleteIcon} alt="Delete" style={{ width: "20px", marginRight: "5px", cursor: "pointer" }}
+                                                                onClick={() => handleEdit(event)}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className='even-date-category'>
+                                                        <div className='category-font-b'>
+                                                            <p className='category-font'>{event?.category?.name}</p>
+                                                        </div>
+                                                        <p className='category-data'> {new Date(event.eventDate).toLocaleDateString()}</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-center">No events found</p>
+                                    )}
+                                </div>
+
+                            </>
+                        )
+                }
+                {/* <div className="row mt-3">
+                    {filteredEvents.length > 0 ? (
+                        filteredEvents?.map((event) => (
                             <div key={event._id} className="col-md-4 col-sm-4 col-lg-4 mb-3">
                                 <div className="event-card">
                                     {event.image && (
@@ -226,17 +319,20 @@ const EventList = () => {
                                         </div>
                                     </div>
                                     <div className='even-date-category'>
-                                        <p>{event.category}</p>
-                                        <p> {new Date(event.eventDate).toLocaleDateString()}</p>
-
+                                        <div className='category-font-b'>
+                                        <p className='category-font'>{event?.category?.name}</p>
+                                        </div>
+                                        <p className='category-data'> {new Date(event.eventDate).toLocaleDateString()}</p>
                                     </div>
                                 </div>
+                               
                             </div>
                         ))
                     ) : (
                         <p className="text-center">No events found</p>
                     )}
-                </div>
+                </div> */}
+
 
                 <div className='footer-btn mb-3'>
                     <div>
@@ -264,15 +360,16 @@ const EventList = () => {
                                 <form onSubmit={formik.handleSubmit}>
 
                                     <div className='drag-model-input-img'>
-
-
                                         {previewImage ? (
-                                            <div className="mb-3">
-                                                <img
-                                                    src={previewImage}
-                                                    alt="Preview"
-                                                    className="img-preview"
-
+                                            <div className="mb-3" onClick={handleClick} style={{ cursor: "pointer" }}>
+                                                <img src={previewImage} alt="Preview" className="img-preview" />
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    name="image"
+                                                    onChange={handleImageChange}
+                                                    ref={fileInputRef}
+                                                    style={{ display: "none" }} // Hide input
                                                 />
                                             </div>
                                         ) : (
@@ -281,9 +378,9 @@ const EventList = () => {
                                                 accept="image/*"
                                                 name="image"
                                                 onChange={handleImageChange}
+                                                ref={fileInputRef}
                                             />
                                         )}
-
                                     </div>
 
                                     <div className="mb-3">
@@ -318,10 +415,11 @@ const EventList = () => {
                                             value={formik.values.category}
                                         >
                                             <option value="" disabled>Select Option</option>
-                                            <option value="conference">Conference</option>
-                                            <option value="workshop">Workshop</option>
-                                            <option value="webinar">Webinar</option>
-                                            <option value="meetup">Meetup</option>
+                                            {categories?.map((category) => (
+                                                <option key={category._id} value={category._id}>
+                                                    {category.name}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
 
