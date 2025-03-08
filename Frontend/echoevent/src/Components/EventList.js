@@ -2,9 +2,11 @@ import './Event.css';
 import { FaPlus } from "react-icons/fa6";
 import { useState, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
-import { EditIcon, DeleteIcon, ListView, SortView, EchoEvent, Vector, Search, DeleteImage, Previousbutton, pagination } from '../share/image';
+import { EditIcon, DeleteIcon, ListView, SortView, EchoEvent, Vector, Search, DeleteImage, CardView, Previousbutton, pagination,Eventviewimage } from '../share/image';
 import axios from 'axios'
 import SearchIn from './Search';
+import ListGroup from './Listgroup';
+import Pagination from './pagination';
 import ListViewIn from './ListViewIn';
 import * as Yup from 'yup';
 
@@ -22,12 +24,17 @@ const EventList = () => {
     const [currentPage, setCurrentPage] = useState(1); // Pagination state
     const [searchQuery, setSearchQuery] = useState("");
     const [listview, setListView] = useState(false)
+    const [showFilterOptions, setShowFilterOptions] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [sortOption, setSortOption] = useState("");
+    const itemsPerPage = 3; 
+    const token = localStorage.getItem("echotoken")
+    console.log(token, "tokenjfjlfjljfjl of getevent")
 
     const fetchCategory = async () => {
         const catresp = await axios.get(`http://localhost:5000/api/category/getcategory`)
         setCategory(catresp.data)
     }
-
     const handleClick = () => {
         fileInputRef.current.value = "";
         fileInputRef.current.click();
@@ -37,9 +44,20 @@ const EventList = () => {
         setListView(true)
     }
 
+    const handleListViewClose = () => {
+        setListView(false)
+    }
+
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/events/getEvent`);
+            const response = await axios.get(`http://localhost:5000/api/events/getEvent`
+                , {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
             setEventdata(response.data);
             setFilteredEvents(response.data)
         } catch (error) {
@@ -50,10 +68,10 @@ const EventList = () => {
     const handleSearchChange = (e) => {
         const query = e.target.value.toLowerCase();
         setSearchQuery(query);
-        setCurrentPage(1);
+        setCurrentPage(1); // Reset to first page when searching
 
         if (query === "") {
-            setFilteredEvents(eventdata);
+            setFilteredEvents(eventdata); // Reset filter when search is cleared
         } else {
             const filtered = eventdata.filter(event =>
                 event.eventName.toLowerCase().includes(query) ||
@@ -62,6 +80,54 @@ const EventList = () => {
             setFilteredEvents(filtered);
         }
     };
+
+    const toggleFilterMenu = () => {
+        setShowFilterOptions(!showFilterOptions);
+    };
+
+ 
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest(".filter-container")) {
+                setShowFilterOptions(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const handleFilterChange = (category) => {
+        setSelectedCategory(category);
+        if (category.value === "all") {
+            setFilteredEvents(eventdata);
+        } else {
+            const filtered = eventdata.filter(event => event.category.name === category.value);
+            setFilteredEvents(filtered);
+        }
+        setCurrentPage(1); // Reset to first page after filtering
+        setShowFilterOptions(false);
+    };
+
+    const filterOptions = [
+        { label: "All Events", value: "all" },
+        ...Array.from(new Set(eventdata.map(event => event.category.name))) // Extract unique categories
+            .map(category => ({ label: category, value: category }))
+    ];
+
+    // 🔹 Pagination Logic
+    const indexOfLastEvent = currentPage * itemsPerPage;
+    const indexOfFirstEvent = indexOfLastEvent - itemsPerPage;
+    const currentEvents = filteredEvents.slice(indexOfFirstEvent, indexOfLastEvent);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -94,7 +160,14 @@ const EventList = () => {
 
     const handleDelete = async (eventId) => {
         try {
-            await axios.delete(`http://localhost:5000/api/events/deleteEvent/${eventId}`);
+            await axios.delete(`http://localhost:5000/api/events/deleteEvent/${eventId}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
             setEventdata(prevData => prevData.filter(event => event._id !== eventId));
             // alert("Event deleted successfully!");
         } catch (error) {
@@ -137,12 +210,19 @@ const EventList = () => {
                 if (editEvent) {
 
                     await axios.put(`http://localhost:5000/api/events/editEvent/${editEvent._id}`, formData, {
-                        headers: { "Content-Type": "multipart/form-data" },
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            'Authorization': `Bearer ${token}`
+                        },
                     });
                 } else {
 
                     await axios.post("http://localhost:5000/api/events/addEvent", formData, {
-                        headers: { "Content-Type": "multipart/form-data" },
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            'Authorization': `Bearer ${token}`
+
+                        },
                     });
                 }
 
@@ -207,7 +287,7 @@ const EventList = () => {
                         <h3>Events</h3>
                         <p>View and Manage Every Event of Future</p>
                     </div>
-                    <button className='sort-event-btn'>
+                    {/* <button className='sort-event-btn'>
                         <div className='event-filter-layout'>
                             <div>
                                 <img src={SortView} />
@@ -217,19 +297,49 @@ const EventList = () => {
                             </div>
 
                         </div>
-                    </button>
+                    </button> */}
+                      <div className="filter-container" style={{ position: "relative", display: "inline-block" }}>
+                <button className='filter-btn sort-event-btn' onClick={toggleFilterMenu}>
+                    <p>Filter</p>
+                </button>
+
+                {/* 🔽 Filter Options ListGroup Component */}
+                {showFilterOptions && (
+                    <ListGroup items={filterOptions} onSelectItem={handleFilterChange} />
+                )}
+            </div>
                     <button className="list-event-btn">
-                        <div className='event-filter-layout' onClick={handleListView}>
-                            <div>
-                                <img src={ListView}
-                                />
-                            </div>
-                            <div>
-                                <p>List</p>
-                            </div>
+                        <div>
+                            {
+                                listview ? (
+                                    <>
+                                        <div onClick={handleListViewClose} className='event-filter-layout'>
+                                            <div>
+                                                <img src={CardView}
+                                                />
+                                            </div>
+                                            <div>
+                                                <p className='event-card-p'>card view</p>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div onClick={handleListView} className='event-filter-layout'>
+                                            <div>
+                                                <img src={ListView}
 
+                                                />
+                                            </div>
+                                            <div>
+                                                <p className='event-list-p'>list view</p>
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+
+                            }
                         </div>
-
                     </button>
                     <button className="add-event-btn" onClick={handleOpenModal}>
                         Add Event <FaPlus
@@ -243,9 +353,9 @@ const EventList = () => {
                     listview ? (
                         <>
                             <ListViewIn
-                            filteredEvents={filteredEvents}
-                            handleEdit={handleEdit}
-                            handleDeleteModel={handleDeleteModel}
+                                filteredEvents={currentEvents}
+                                handleEdit={handleEdit}
+                                handleDeleteModeld={handleDeleteModel}
                             />
 
                         </>
@@ -253,8 +363,8 @@ const EventList = () => {
                         (
                             <>
                                 <div className="row mt-3">
-                                    {filteredEvents.length > 0 ? (
-                                        filteredEvents?.map((event) => (
+                                    {currentEvents.length > 0 ? (
+                                        currentEvents?.map((event) => (
                                             <div key={event._id} className="col-md-4 col-sm-4 col-lg-4 mb-3">
                                                 <div className="event-card">
                                                     {event.image && (
@@ -287,54 +397,20 @@ const EventList = () => {
                                             </div>
                                         ))
                                     ) : (
-                                        <p className="text-center">No events found</p>
+                                        <>
+                                           <img src={ Eventviewimage}
+                                           className='img-fluid'
+                                           />
+                                           <p className="text-center">No Event’s to show yet ! add new event here...</p>
+                                        </>
+                                     
                                     )}
                                 </div>
 
                             </>
                         )
                 }
-                {/* <div className="row mt-3">
-                    {filteredEvents.length > 0 ? (
-                        filteredEvents?.map((event) => (
-                            <div key={event._id} className="col-md-4 col-sm-4 col-lg-4 mb-3">
-                                <div className="event-card">
-                                    {event.image && (
-                                        <img src={`http://localhost:5000/${event.image}`}
-                                            alt={event.eventName}
-                                            className="img-fluid mb-2"
-                                            style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }}
-                                        />
-                                    )}
-                                    <div className='event-card-text'>
-                                        <h5>{event.eventName}</h5>
-
-                                        <div>
-                                            <img src={EditIcon} alt="Edit" style={{ width: "20px", marginRight: "5px", cursor: "pointer" }}
-                                                onClick={() => handleDeleteModel(event._id)}
-                                            />
-                                            <img src={DeleteIcon} alt="Delete" style={{ width: "20px", marginRight: "5px", cursor: "pointer" }}
-                                                onClick={() => handleEdit(event)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='even-date-category'>
-                                        <div className='category-font-b'>
-                                        <p className='category-font'>{event?.category?.name}</p>
-                                        </div>
-                                        <p className='category-data'> {new Date(event.eventDate).toLocaleDateString()}</p>
-                                    </div>
-                                </div>
-                               
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-center">No events found</p>
-                    )}
-                </div> */}
-
-
-                <div className='footer-btn mb-3'>
+                {/* <div className='footer-btn mb-3'>
                     <div>
                         <button className='btn-previous'>Previous</button>
                     </div>
@@ -344,8 +420,17 @@ const EventList = () => {
                     <div>
                         <button className='btn-previous'>Next</button>
                     </div>
-                </div>
+                </div> */}
+            {filteredEvents.length > itemsPerPage && (
+                <Pagination
+                    totalItems={filteredEvents.length}
+                    itemsPerPage={itemsPerPage}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                />
+            )}
             </div>
+
 
             {/* Modal */}
             {showModal && (
@@ -393,6 +478,9 @@ const EventList = () => {
                                             value={formik.values.eventName}
                                             onChange={formik.handleChange}
                                         />
+                                        {formik.touched.eventName && formik.errors.eventName ? (
+                                            <div className='text-danger'>{formik.errors.eventName}</div>
+                                        ) : null}
                                     </div>
 
                                     <div className="mb-3">
@@ -404,6 +492,9 @@ const EventList = () => {
                                             value={formik.values.eventDate || ''}
                                             onChange={formik.handleChange}
                                         />
+                                        {formik.touched.eventDate && formik.errors.eventDate ? (
+                                            <div className='text-danger'>{formik.errors.eventDate}</div>
+                                        ) : null}
                                     </div>
 
                                     <div className="mb-3">
@@ -421,6 +512,9 @@ const EventList = () => {
                                                 </option>
                                             ))}
                                         </select>
+                                        {formik.touched.category && formik.errors.category ? (
+                                            <div className='text-danger'>{formik.errors.category}</div>
+                                        ) : null}
                                     </div>
 
                                     <div className="modal-footer">

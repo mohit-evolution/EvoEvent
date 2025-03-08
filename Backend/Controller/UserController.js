@@ -1,9 +1,14 @@
 const User = require("../Model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const {registerSchema,loginSchema} = require("../Middleware/validation")
 
 exports.register = async (req, res) => {
   try {
+
+    const { error } = registerSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: error.details[0].message });
+
     const { name, email, password  } = req.body;
 
     let user = await User.findOne({ email });
@@ -20,14 +25,17 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+    
+    const { error } = loginSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: error.details[0].message });
+
     const { email, password } = req.body;
    
     let user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid Credentials!" });
 
-  
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid Credentials!" });
+    if (!isMatch) return res.status(400).json({ message: "Invalid Credentials" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 

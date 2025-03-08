@@ -2,10 +2,14 @@ const express = require("express");
 const Event = require("../Model/Event");
 const upload = require("../Middleware/upload");
 const category = require("../Model/Category")
+const {addEvent} = require("../Middleware/validation")
 exports.addEvent= async (req, res) => {
     try {
         console.log("Request Body:", req.body);
         console.log("Uploaded File:", req.file);
+
+         const { error } = addEvent.validate(req.body);
+            if (error) return res.status(400).json({ message: error.details[0].message });
 
         const { eventName, eventDate, category } = req.body;
 

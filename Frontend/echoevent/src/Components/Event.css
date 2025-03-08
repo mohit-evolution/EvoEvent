@@ -169,7 +169,15 @@ btn-close {
     padding: 16px;
     background-color: #FFFFFF;
 }
-
+.event-list-p
+{
+    width: 70px;
+    height: 24px;
+}
+.event-card-p{
+    width: 73px;
+    height: 24px; 
+}
 .event-card-text{
     display: flex;
     justify-content: space-between;
