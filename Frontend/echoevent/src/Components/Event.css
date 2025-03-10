@@ -253,11 +253,138 @@ btn-close {
     background-color:#EAEAEA;
     border: 0px !important;
 }
+.event-no-data{
+    max-width: 100%;
+    height: 207px;
+}
 
+@media (min-width: 320px) and (max-width: 376px){
+    .event-card {
+    
+        max-width: 100%;
+        height: 284px;
+    
+    }
+    .event-card-p {
+        width: 73px;
+        height: 24px;
+        display: none;
+    }
+    .echo-event{
+        width: 173px;
+        height: 40px;
+        gap: 6px;
+        margin-top: 10px;
+        position: relative;
+        right: 1rem !important;
+     }
+   
+    .search-contact-event{
+        display: flex;
+        justify-content: center;
+        position: relative;
+        left: 2rem;
+    }
+    .event-text{
+        position: relative;
+        right: 1rem;
+    }  
+    .search-input {
+        padding-left: 35px;
+        height: 30px;
+        width: 40px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .list-img-event{
+        width: 24px;
+        height: 24px !important;
+    }
+    .sort-img-event{
+        width: 24px;
+        height: 24px !important ;
+    }
+    .add-event-btn{
+        width: 116px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px;
+        padding: 6px 5px 17px 16px;
+        gap: 8px;
+        background: #FD5900;
+        color: white;
+    }
+    .event-list-p{
+        display: none
+    }
+    .list-event-btn{
+        width: 78px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid #EAEAEA;
+        padding: 8px 24px 8px 24px;
+        gap: 8px;
+        background-color: #FFF1EA;
+        margin-right: 3rem;
+    }
+    .sort-event-btn{
+        width: 64px;
+        height: 40px;
+        border-radius: 8px;
+        padding: 8px 24px 8px 24px;
+        gap: 8px;
+        border: 1px solid #EAEAEA;
+        background-color: #FFF1EA;
+        background-color: #FFF1EA;
+    
+    }
+    .Event-side {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+    }
+    .manage-button-add-edit-filter{
+        display: flex;
+    }
+    .filter-event-button{
+        display: none;
+    }
+    .contact-event {
+        border-radius: 12px;
+        padding: 15px 6px;
+    }
+    .model-close-button {
+        width: 108px;
+        height: 36px;
+        border-radius: 8px;
+        padding: 0px 36px;
+        background-color: #EAEAEA;
+        border: 0px !important;
+    }
+    .model-delete-button {
+        width: 110px;
+        height: 36px;
+        border-radius: 8px;
+        padding: 0px 40px;
+        background-color: #FD5900;
+        border: 0px !important;
+    }
+    .delete-image-icon {
+        position: relative !important;
+        left: 0rem !important;
+    }
+}
 
+@media (min-width: 376px) and (max-width: 426px){
 
-@media (min-width: 576px) and (max-width: 767px) {
-     .echo-event{
+    .event-card {
+    
+        max-width: 100%;
+        height: 284px;
+    
+    }
+    .echo-event{
         width: 173px;
         height: 40px;
         gap: 6px;
@@ -274,14 +401,221 @@ btn-close {
     .event-text{
         position: relative;
         right: 1rem;
-    }    
-
-    .event-card {
+    }  
+    .search-input {
+        padding-left: 35px;
+        height: 30px;
+        width: 40px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .event-card-p {
+        width: 73px;
+        height: 24px;
+        display: none;
+    }
+    .list-img-event{
+        width: 24px;
+        height: 24px !important;
+    }
+    .sort-img-event{
+        width: 24px;
+        height: 24px !important ;
+    }
+    .add-event-btn{
+        width: 116px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px;
+        padding: 6px 5px 17px 16px;
+        gap: 8px;
+        background: #FD5900;
+        color: white;
+    }
+    .event-list-p{
+        display: none
+    }
+    .list-event-btn{
+        width: 78px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid #EAEAEA;
+        padding: 8px 24px 8px 24px;
+        gap: 8px;
+        background-color: #FFF1EA;
+        margin-right: 3rem;
+    }
+    .sort-event-btn{
+        width: 64px;
+        height: 40px;
+        border-radius: 8px;
+        padding: 8px 24px 8px 24px;
+        gap: 8px;
+        border: 1px solid #EAEAEA;
+        background-color: #FFF1EA;
+        background-color: #FFF1EA;
     
-    width: 173px;
-    height: 192px;
-   
+    }
+    .Event-side {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+    }
+    .manage-button-add-edit-filter{
+        display: flex;
+    }
+    .filter-event-button{
+        display: none;
+    }
+    .contact-event {
+        border-radius: 12px;
+        padding: 15px 6px;
+    }
+    .model-close-button {
+        width: 108px;
+        height: 36px;
+        border-radius: 8px;
+        padding: 0px 36px;
+        background-color: #EAEAEA;
+        border: 0px !important;
+    }
+    .model-delete-button {
+        width: 110px;
+        height: 36px;
+        border-radius: 8px;
+        padding: 0px 40px;
+        background-color: #FD5900;
+        border: 0px !important;
+    }
+    .delete-image-icon {
+        position: relative !important;
+        left: 0rem !important;
+    }
+
 }
+
+
+@media (min-width: 576px) and (max-width: 768px) {
+    .Event-side {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+    }
+    .event-card-p {
+        width: 73px;
+        height: 24px;
+        display: none;
+    }
+
+.event-card {
+    max-width: 100%;
+    height: 284px;
+}
+.echo-event{
+    width: 173px;
+    height: 40px;
+    gap: 6px;
+    margin-top: 10px;
+    position: relative;
+    right: 8rem;
+ }
+.search-contact-event{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    left: 8rem;
+}
+.event-text{
+    position: relative;
+    right: 14rem;
+}  
+.search-input {
+    padding-left: 35px;
+    height: 30px;
+    width: 40px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.list-img-event{
+    width: 24px;
+    height: 24px !important;
+}
+.sort-img-event{
+    width: 24px;
+    height: 24px !important ;
+}
+.add-event-btn{
+    width: 116px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px;
+    padding: 6px 5px 17px 16px;
+    gap: 8px;
+    background: #FD5900;
+    color: white;
+}
+.event-list-p{
+    display: none
+}
+.list-event-btn{
+    width: 78px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #EAEAEA;
+    padding: 8px 24px 8px 24px;
+    gap: 8px;
+    background-color: #FFF1EA;
+    margin-right: 3rem;
+}
+.sort-event-btn{
+    width: 64px;
+    height: 40px;
+    border-radius: 8px;
+    padding: 8px 24px 8px 24px;
+    gap: 8px;
+    border: 1px solid #EAEAEA;
+    background-color: #FFF1EA;
+    background-color: #FFF1EA;
+
+}
+.Event-side{
+    display: flex;
+    justify-content: flex-end;
+   flex-wrap: wrap;
+}
+.manage-button-add-edit-filter{
+    display: flex;
+}
+.filter-event-button{
+    display: none;
+}
+.contact-event {
+    border-radius: 12px;
+    padding: 15px 6px;
+}
+.model-close-button {
+    width: 108px;
+    height: 36px;
+    border-radius: 8px;
+    padding: 0px 36px;
+    background-color: #EAEAEA;
+    border: 0px !important;
+}
+.model-delete-button {
+    width: 110px;
+    height: 36px;
+    border-radius: 8px;
+    padding: 0px 40px;
+    background-color: #FD5900;
+    border: 0px !important;
+}
+.delete-image-icon {
+    position: relative !important;
+    left: 0rem !important;
+}
+
     
 }
 @media (min-width: 767px) and (max-width: 992px) {
@@ -293,6 +627,11 @@ btn-close {
         position: relative;
         right: 7rem;
      }
+     .event-card-p {
+        width: 73px;
+        height: 24px;
+        display: none;
+    }
     .search-contact-event{
         display: flex;
         justify-content: center;
@@ -310,6 +649,7 @@ btn-close {
         height: 192px;
        
     }
+   
 }
 @media (min-width: 992px) and (max-width:1200px) {
     .echo-event{
@@ -336,5 +676,10 @@ btn-close {
         width: 240pxpx;
         height: 192px;
        
+    }
+    .event-card-p {
+        width: 73px;
+        height: 24px;
+        display: none;
     }
 }

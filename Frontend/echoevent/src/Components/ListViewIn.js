@@ -8,7 +8,7 @@ const ListViewIn = ({ filteredEvents, handleEdit, handleDeleteModeld}) => {
     return (
         <>
             <div className="container">
-                <table className="table">
+                <table className="table mt-2">
                     <thead>
                         <tr>
                             <th scope="col">Event Name</th>
@@ -20,13 +20,13 @@ const ListViewIn = ({ filteredEvents, handleEdit, handleDeleteModeld}) => {
                     <tbody>
                         {filteredEvents.map((apidata) => (
                             <tr key={apidata._id}>
-                                <td>
+                                <td className="d-flex align-items-center gap-2">
                                     <img 
                                         src={`http://localhost:5000/${apidata.image}`} 
                                         alt={apidata.eventName} 
                                         className="img-fluid mb-2 img-view-list"
                                     />
-                                    {apidata.eventName}
+                                 <p className="mb-0">{apidata.eventName}</p>
                                 </td>
                                 <td>{new Date(apidata.eventDate).toLocaleDateString()}</td>
                                 <td>{apidata.category.name}</td>

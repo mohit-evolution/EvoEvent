@@ -2,7 +2,7 @@ import './Event.css';
 import { FaPlus } from "react-icons/fa6";
 import { useState, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
-import { EditIcon, DeleteIcon, ListView, SortView, EchoEvent, Vector, Search, DeleteImage, CardView, Previousbutton, pagination,Eventviewimage } from '../share/image';
+import { EditIcon, DeleteIcon, ListView, SortView, EchoEvent, Vector, Search, DeleteImage, CardView, Previousbutton, pagination, Eventviewimage } from '../share/image';
 import axios from 'axios'
 import SearchIn from './Search';
 import ListGroup from './Listgroup';
@@ -27,7 +27,7 @@ const EventList = () => {
     const [showFilterOptions, setShowFilterOptions] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [sortOption, setSortOption] = useState("");
-    const itemsPerPage = 3; 
+    const itemsPerPage = 3;
     const token = localStorage.getItem("echotoken")
     console.log(token, "tokenjfjlfjljfjl of getevent")
 
@@ -85,7 +85,7 @@ const EventList = () => {
         setShowFilterOptions(!showFilterOptions);
     };
 
- 
+
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -127,7 +127,7 @@ const EventList = () => {
         setCurrentPage(pageNumber);
     };
 
-    
+
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -298,55 +298,63 @@ const EventList = () => {
 
                         </div>
                     </button> */}
-                      <div className="filter-container" style={{ position: "relative", display: "inline-block" }}>
-                <button className='filter-btn sort-event-btn' onClick={toggleFilterMenu}>
-                    <p>Filter</p>
-                </button>
+                    <div className='manage-button-add-edit-filter'>
+                        <div className="filter-container" style={{ position: "relative", display: "inline-block" }}>
+                            <button className='filter-btn sort-event-btn' onClick={toggleFilterMenu}>
+                                <div className='d-flex'>
+                                    <div>
+                                        <img src={SortView} />
+                                    </div>
+                                    <div className='filter-event-button'>
+                                        <p>Filter</p>
+                                    </div>
+                                </div>
+                            </button>
 
-                {/* 🔽 Filter Options ListGroup Component */}
-                {showFilterOptions && (
-                    <ListGroup items={filterOptions} onSelectItem={handleFilterChange} />
-                )}
-            </div>
-                    <button className="list-event-btn">
-                        <div>
-                            {
-                                listview ? (
-                                    <>
-                                        <div onClick={handleListViewClose} className='event-filter-layout'>
-                                            <div>
-                                                <img src={CardView}
-                                                />
-                                            </div>
-                                            <div>
-                                                <p className='event-card-p'>card view</p>
-                                            </div>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div onClick={handleListView} className='event-filter-layout'>
-                                            <div>
-                                                <img src={ListView}
-
-                                                />
-                                            </div>
-                                            <div>
-                                                <p className='event-list-p'>list view</p>
-                                            </div>
-                                        </div>
-                                    </>
-                                )
-
-                            }
+                            {/* 🔽 Filter Options ListGroup Component */}
+                            {showFilterOptions && (
+                                <ListGroup items={filterOptions} onSelectItem={handleFilterChange} />
+                            )}
                         </div>
-                    </button>
-                    <button className="add-event-btn" onClick={handleOpenModal}>
-                        Add Event <FaPlus
-                            style={{ color: "white" }}
-                        />
-                    </button>
+                        <button className="list-event-btn">
+                            <div>
+                                {
+                                    listview ? (
+                                        <>
+                                            <div onClick={handleListViewClose} className='event-filter-layout'>
+                                                <div>
+                                                    <img src={CardView}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <p className='event-card-p'>card view</p>
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div onClick={handleListView} className='event-filter-layout'>
+                                                <div>
+                                                    <img src={ListView}
 
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <p className='event-list-p'>list view</p>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+
+                                }
+                            </div>
+                        </button>
+                        <button className="add-event-btn" onClick={handleOpenModal}>
+                            Add Event <FaPlus
+                                style={{ color: "white" }}
+                            />
+                        </button>
+                    </div>
                 </div>
                 {
 
@@ -398,12 +406,13 @@ const EventList = () => {
                                         ))
                                     ) : (
                                         <>
-                                           <img src={ Eventviewimage}
-                                           className='img-fluid'
-                                           />
-                                           <p className="text-center">No Event’s to show yet ! add new event here...</p>
+                                            <img src={Eventviewimage}
+                                                className='event-no-data'
+                                            />
+                                            <p className="text-center">No Event’s to show yet</p>
+                                            <p className="text-center"> add new event here...</p>
                                         </>
-                                     
+
                                     )}
                                 </div>
 
@@ -421,14 +430,14 @@ const EventList = () => {
                         <button className='btn-previous'>Next</button>
                     </div>
                 </div> */}
-            {filteredEvents.length > itemsPerPage && (
-                <Pagination
-                    totalItems={filteredEvents.length}
-                    itemsPerPage={itemsPerPage}
-                    currentPage={currentPage}
-                    onPageChange={handlePageChange}
-                />
-            )}
+                {filteredEvents.length > itemsPerPage && (
+                    <Pagination
+                        totalItems={filteredEvents.length}
+                        itemsPerPage={itemsPerPage}
+                        currentPage={currentPage}
+                        onPageChange={handlePageChange}
+                    />
+                )}
             </div>
 
 

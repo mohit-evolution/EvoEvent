@@ -97,3 +97,204 @@
     text-decoration-thickness: 0%; /* Underline thickness */
     text-decoration-skip-ink: none; /* Skip ink */
 }
+@media (min-width: 320px) and (max-width: 376px){
+    .login-btn{
+        width: 420px;
+        height: 56px;
+        border-radius: 8px;
+        padding: 16px 64px 16px 64px;
+        background-color: #FD5900;
+        border: 0px !important;
+    }
+    .login-center{
+        display: flex;
+        justify-content: center;
+        width: 348px;
+        height: 48px;
+    }
+    .login-event-text{
+        max-width: 100%;
+        height: 64px;
+    }
+    .login-event-evo{
+        font-family: "Roboto", sans-serif;
+        font-weight: 500;
+        font-size: 40px;
+        color: #FD5900;
+    }
+    .login-event-evo-event{
+        font-family: "Newsreader", serif;
+        font-weight: 300;
+        font-style: italic;
+        font-size: 40px;
+        color:#FFB48C;
+    }
+    .login-event-text-font{
+        font-weight: 400px;
+        font-size: 16px !important;
+        text-align: center;
+        font-family: "Roboto", sans-serif;
+        letter-spacing: 0%;
+        color: #06060680;
+        margin-top: 0 !important;
+        margin-bottom: 0rem !important;
+    }
+    .login-event-text-font-detail{
+        margin-top: 0 !important;
+        font-family: "Roboto", sans-serif;
+        margin-bottom: 0rem !important;
+        font-weight: 400px;
+        font-size: 16px;
+        letter-spacing: 0%;
+        color: #06060680;
+        text-align: center;
+        margin: 5rem;
+    }
+    .password-img-icon{
+        position: absolute;
+        right: 14px;
+        top: 15px;
+        bottom: 15px;
+        width: 24px;
+        height: 24px;
+    }
+    .forget-password{
+        width: 169px;
+        height: 19px;
+    }
+    
+}
+@media (min-width: 376px) and (max-width: 576px){
+    .login-btn{
+        width: 420px;
+        height: 56px;
+        border-radius: 8px;
+        padding: 16px 64px 16px 64px;
+        background-color: #FD5900;
+        border: 0px !important;
+    }
+    .login-center{
+        display: flex;
+        justify-content: center;
+        width: 348px;
+        height: 48px;
+    }
+    .login-event-text{
+        max-width: 100%;
+        height: 64px;
+    }
+    .login-event-evo{
+        font-family: "Roboto", sans-serif;
+        font-weight: 500;
+        font-size: 40px;
+        color: #FD5900;
+    }
+    .login-event-evo-event{
+        font-family: "Newsreader", serif;
+        font-weight: 300;
+        font-style: italic;
+        font-size: 40px;
+        color:#FFB48C;
+    }
+    .login-event-text-font{
+        font-weight: 400px;
+        font-size: 12px !important;
+        text-align: center;
+        font-family: "Roboto", sans-serif;
+        letter-spacing: 0%;
+        color: #06060680;
+        margin-top: 0 !important;
+        margin-bottom: 0rem !important;
+    }
+    .login-event-text-font-detail{
+        margin-top: 0 !important;
+        font-family: "Roboto", sans-serif;
+        margin-bottom: 0rem !important;
+        font-weight: 400px;
+        font-size: 12px;
+        letter-spacing: 0%;
+        color: #06060680;
+        text-align: center;
+        margin: 5rem;
+    }
+    .password-img-icon{
+        position: absolute;
+        right: 14px;
+        top: 15px;
+        bottom: 15px;
+        width: 24px;
+        height: 24px;
+    }
+    .forget-password{
+        width: 169px;
+        height: 19px;
+    }
+    
+}
+@media (min-width: 577px) and (max-width: 768px){
+    .login-btn{
+        width: 420px;
+        height: 56px;
+        border-radius: 8px;
+        padding: 16px 64px 16px 64px;
+        background-color: #FD5900;
+        border: 0px !important;
+    }
+    .login-center{
+        display: flex;
+        justify-content: center;
+        width: 348px;
+        height: 48px;
+    }
+    .login-event-text{
+        max-width: 100%;
+        height: 64px;
+    }
+    .login-event-evo{
+        font-family: "Roboto", sans-serif;
+        font-weight: 500;
+        font-size: 40px;
+        color: #FD5900;
+    }
+    .login-event-evo-event{
+        font-family: "Newsreader", serif;
+        font-weight: 300;
+        font-style: italic;
+        font-size: 40px;
+        color:#FFB48C;
+    }
+    .login-event-text-font{
+        font-weight: 400px;
+        font-size: 12px !important;
+        text-align: center;
+        font-family: "Roboto", sans-serif;
+        letter-spacing: 0%;
+        color: #06060680;
+        margin-top: 0 !important;
+        margin-bottom: 0rem !important;
+    }
+    .login-event-text-font-detail{
+        margin-top: 0 !important;
+        font-family: "Roboto", sans-serif;
+        margin-bottom: 0rem !important;
+        font-weight: 400px;
+        font-size: 12px;
+        letter-spacing: 0%;
+        color: #06060680;
+        text-align: center;
+        margin: 5rem;
+    }
+    .password-img-icon{
+        position: absolute;
+        right: 14px;
+        top: 15px;
+        bottom: 15px;
+        width: 24px;
+        height: 24px;
+    }
+    .forget-password{
+        width: 169px;
+        height: 19px;
+    }
+    
+}

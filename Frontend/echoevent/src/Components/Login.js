@@ -1,10 +1,10 @@
 import './Login.css';
 import { useState } from 'react';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { EyeImage,RemeberMeImage } from '../share/image';
+import { EyeImage, RemeberMeImage } from '../share/image';
 import axios from 'axios'
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -23,40 +23,39 @@ const Login = () => {
         }),
         onSubmit: (values) => {
             const logindata = {
-              email:values.email,
-              password:values.password
+                email: values.email,
+                password: values.password
             }
             handleLogin(logindata)
         },
     });
 
     const handleLogin = async (logindata) => {
-        try{
-            const reasponse = await axios.post(`http://localhost:5000/api/auth/login`,logindata)
+        try {
+            const reasponse = await axios.post(`http://localhost:5000/api/auth/login`, logindata)
             console.log(reasponse)
-            localStorage.setItem("echotoken",reasponse.data.token)
-             alert("User Login Successfully");
-              navigate('/eventlist')
+            localStorage.setItem("echotoken", reasponse.data.token)
+            alert("User Login Successfully");
+            navigate('/eventlist')
         }
-        catch(error)
-        {
+        catch (error) {
             console.log(error)
         }
-    
+
     }
 
     return (
         <div className='background-color d-flex justify-content-center align-items-center vh-100'>
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-md-6 col-sm-8 col-lg-4">
+                    <div className="col-md-4 col-sm-4 col-lg-4 mt-4">
 
                         <h3 className="text-center mb-2">Sign in to <span className='login-event-evo'>Evo</span><span className='login-event-evo-event'>Event</span></h3>
                         <div className='login-event-text'>
-                        <p className='login-event-text-font'>Welcome to evento please enter your</p>
-                        <p className='login-event-text-font-detail'>login details below</p>
+                            <p className='login-event-text-font'>Welcome to evento please enter your</p>
+                            <p className='login-event-text-font-detail'>login details below</p>
                         </div>
-                       
+
                         <form onSubmit={formik.handleSubmit}>
                             <div className="mb-2 mt-2">
                                 <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
@@ -82,22 +81,22 @@ const Login = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.password}
                                     />
-                                    <span  className='password-img-icon' onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer' }}>
+                                    <span className='password-img-icon' onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer' }}>
                                         {/* {showPassword ? <FaEyeSlash /> : <FaEye />} */}
-                                        {showPassword? 
-                                    (
-                                        <>
-                                        <img src={EyeImage}
-                                        />
-                                        </>
-                                    )  :
-                                    // (
-                                    //     <>
-                                    //     <img src={EyeImage}/>
-                                    //     </>
-                                    // ) 
-                                    null
-                                    }
+                                        {showPassword ?
+                                            (
+                                                <>
+                                                    <img src={EyeImage}
+                                                    />
+                                                </>
+                                            ) :
+                                            (
+                                                <>
+                                                    <img src={EyeImage} />
+                                                </>
+                                            )
+
+                                        }
                                     </span>
                                 </div>
                                 {formik.touched.password && formik.errors.password ? (
@@ -105,7 +104,7 @@ const Login = () => {
                                 ) : null}
                             </div>
                             <div className='mb-2'>
-                            <img src={RemeberMeImage}/>  <span>Remember me</span>
+                                <img src={RemeberMeImage} />  <span>Remember me</span>
                             </div>
                             <button type="submit" className="login-btn w-100 mb-2">Login</button>
                             <p className='forget-text-design'>Forgot the password ?</p>
