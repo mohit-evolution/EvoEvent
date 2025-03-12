@@ -1,0 +1,38 @@
+.user-img{
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    padding: 8px;
+    background: #EAEAEA;
+    margin-left: 10px;
+}
+.form-control-search-bar {
+    display: block;
+    width: 100% !important;
+    height: 40px !important;
+    padding: .375rem .75rem;
+    padding-left: 40px; /* Space for icon */
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: 1px solid #EAEAEA !important;
+    border-radius: 12px !important;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    text-align: left; /* Align text to the left */
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+.search-icon {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    border: 1.5px #060606;
+}

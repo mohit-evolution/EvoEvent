@@ -5,6 +5,7 @@ const cors = require("cors")
 const authRoutes = require("./Routes/userRoutes")
 const eventRoutes = require("./Routes/eventRoutes")
 const categoryRoutes = require('./Routes/categoryRoutes')
+const roleRoutes = require("./Routes/roleRoutes")
 dotenv.config();
 connectDB();
 
@@ -17,5 +18,6 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/events", eventRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/category",categoryRoutes)
+app.use("/api/role",roleRoutes)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

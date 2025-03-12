@@ -5,6 +5,7 @@ const eventSchema = new mongoose.Schema({
     eventDate: { type: Date, required: true },
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" } ,
     image: { type: String }, // Store image path
-});
+},
+{ timestamps: true });
 
 module.exports = mongoose.model("Event", eventSchema);

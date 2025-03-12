@@ -5,7 +5,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { EyeImage, RemeberMeImage } from '../share/image';
-import axios from 'axios'
+import api from '../axiosInstane';
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate()
@@ -32,7 +32,7 @@ const Login = () => {
 
     const handleLogin = async (logindata) => {
         try {
-            const reasponse = await axios.post(`http://localhost:5000/api/auth/login`, logindata)
+            const reasponse = await api.post(`/api/auth/login`, logindata)
             console.log(reasponse)
             localStorage.setItem("echotoken", reasponse.data.token)
             alert("User Login Successfully");

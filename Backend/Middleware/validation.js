@@ -14,6 +14,10 @@ const registerSchema = Joi.object({
         "string.empty": "Password is required",
         "string.min": "Password must be at least 6 characters long",
     }),
+    roleId: Joi.string().min(6).required().messages({
+        "string.empty": "RoleId is required",
+        
+    }),
 });
 
 const loginSchema = Joi.object({

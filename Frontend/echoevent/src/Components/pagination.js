@@ -1,6 +1,7 @@
 import React from 'react';
 import './pagination.css'
 const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange }) => {
+    
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     console.log(totalItems, "total items in")
     console.log(currentPage, "current page of data")

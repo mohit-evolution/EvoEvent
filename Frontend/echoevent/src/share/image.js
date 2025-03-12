@@ -12,6 +12,8 @@ import Previousbutton from '../imageecho/Outline Button.svg'
 import pagination from '../imageecho/Pagination numbers.svg'
 import CardView from '../imageecho/Card view.svg'
 import Eventviewimage from '../imageecho/Frame 11.svg'
+import Vector1 from '../imageecho/User.svg'
+import SearchIcon from '../imageecho/Vector.svg'
 export{
     EditIcon,
     DeleteIcon,
@@ -26,5 +28,7 @@ export{
     Previousbutton,
     pagination,
     CardView  ,
-    Eventviewimage
+    Eventviewimage,
+    Vector1,
+    SearchIcon
 }

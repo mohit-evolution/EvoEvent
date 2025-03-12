@@ -8,6 +8,7 @@ import SearchIn from './Search';
 import ListGroup from './Listgroup';
 import Pagination from './pagination';
 import ListViewIn from './ListViewIn';
+import api from '../axiosInstane';
 import * as Yup from 'yup';
 
 const EventList = () => {
@@ -32,9 +33,10 @@ const EventList = () => {
     console.log(token, "tokenjfjlfjljfjl of getevent")
 
     const fetchCategory = async () => {
-        const catresp = await axios.get(`http://localhost:5000/api/category/getcategory`)
+        const catresp = await api.get(`/api/category/getcategory`)
         setCategory(catresp.data)
     }
+
     const handleClick = () => {
         fileInputRef.current.value = "";
         fileInputRef.current.click();
@@ -50,14 +52,7 @@ const EventList = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/events/getEvent`
-                , {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-            );
+            const response = await api.get(`/api/events/getEvent`);
             setEventdata(response.data);
             setFilteredEvents(response.data)
         } catch (error) {
@@ -68,10 +63,10 @@ const EventList = () => {
     const handleSearchChange = (e) => {
         const query = e.target.value.toLowerCase();
         setSearchQuery(query);
-        setCurrentPage(1); // Reset to first page when searching
+        setCurrentPage(1); 
 
         if (query === "") {
-            setFilteredEvents(eventdata); // Reset filter when search is cleared
+            setFilteredEvents(eventdata); 
         } else {
             const filtered = eventdata.filter(event =>
                 event.eventName.toLowerCase().includes(query) ||
@@ -108,13 +103,13 @@ const EventList = () => {
             const filtered = eventdata.filter(event => event.category.name === category.value);
             setFilteredEvents(filtered);
         }
-        setCurrentPage(1); // Reset to first page after filtering
+        setCurrentPage(1); 
         setShowFilterOptions(false);
     };
 
     const filterOptions = [
         { label: "All Events", value: "all" },
-        ...Array.from(new Set(eventdata.map(event => event.category.name))) // Extract unique categories
+        ...Array.from(new Set(eventdata.map(event => event.category.name))) 
             .map(category => ({ label: category, value: category }))
     ];
 
@@ -160,23 +155,13 @@ const EventList = () => {
 
     const handleDelete = async (eventId) => {
         try {
-            await axios.delete(`http://localhost:5000/api/events/deleteEvent/${eventId}`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-            );
+            await api.delete(`/api/events/deleteEvent/${eventId}`);
             setEventdata(prevData => prevData.filter(event => event._id !== eventId));
-            // alert("Event deleted successfully!");
         } catch (error) {
             console.error("Error deleting event:", error);
-            // alert("Failed to delete event. Please try again.");
         }
         setDeleteModel(false)
         fetchData()
-
     };
 
     useEffect(() => {
@@ -209,21 +194,10 @@ const EventList = () => {
             try {
                 if (editEvent) {
 
-                    await axios.put(`http://localhost:5000/api/events/editEvent/${editEvent._id}`, formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                            'Authorization': `Bearer ${token}`
-                        },
-                    });
+                    await api.put(`/api/events/editEvent/${editEvent._id}`, formData);
                 } else {
 
-                    await axios.post("http://localhost:5000/api/events/addEvent", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                            'Authorization': `Bearer ${token}`
-
-                        },
-                    });
+                    await api.post("/api/events/addEvent", formData);
                 }
 
                 formik.resetForm();
@@ -264,41 +238,26 @@ const EventList = () => {
         <>
             <div className="container">
                 <div className='d-card mt-3 mb-3'>
-
-                    <div className='d-card-data'>
-                        <div className='echo-event'>
+                    <div className='row'>
+                        <div className='col col-md-6 col-sm-6 col-lg-8 mt-2'>
                             <img src={EchoEvent}
                                 className='img-fluid' />
                         </div>
-                        <div className='search-contact-event'>
+                        <div className='col col-md-6 col-sm-6 col-lg-4 mt-2'>
                             <SearchIn
                                 searchQuery={searchQuery}
                                 handleSearchChange={handleSearchChange}
                             />
-                            <div>
-                                <img src={Vector} className='img-fluid contact-event mt-1' />
-                            </div>
                         </div>
                     </div>
 
                 </div>
-                <div className='Event-side'>
-                    <div className='event-text'>
+                <div className='row'>
+                    <div className='col col-sm-6 col-lg-6 col-md-6'>
                         <h3>Events</h3>
                         <p>View and Manage Every Event of Future</p>
                     </div>
-                    {/* <button className='sort-event-btn'>
-                        <div className='event-filter-layout'>
-                            <div>
-                                <img src={SortView} />
-                            </div>
-                            <div>
-                                <p>Filter</p>
-                            </div>
-
-                        </div>
-                    </button> */}
-                    <div className='manage-button-add-edit-filter'>
+                    <div className='manage-button-add-edit-filter col col-sm-6 col-lg-6 col-md-6'>
                         <div className="filter-container" style={{ position: "relative", display: "inline-block" }}>
                             <button className='filter-btn sort-event-btn' onClick={toggleFilterMenu}>
                                 <div className='d-flex'>
@@ -419,17 +378,6 @@ const EventList = () => {
                             </>
                         )
                 }
-                {/* <div className='footer-btn mb-3'>
-                    <div>
-                        <button className='btn-previous'>Previous</button>
-                    </div>
-                    <div>
-                        <img src={pagination} />
-                    </div>
-                    <div>
-                        <button className='btn-previous'>Next</button>
-                    </div>
-                </div> */}
                 {filteredEvents.length > itemsPerPage && (
                     <Pagination
                         totalItems={filteredEvents.length}
@@ -554,7 +502,6 @@ const EventList = () => {
                                 <img src={DeleteImage}
                                     className='delete-image-icon'
                                 />
-
 
                                 <div className="modal-footer model-align-button">
                                     <button type="button" className="model-close-button" onClick={() => setDeleteModel(false)}>
