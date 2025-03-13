@@ -2,7 +2,7 @@ import './Event.css';
 import { FaPlus } from "react-icons/fa6";
 import { useState, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
-import { EditIcon, DeleteIcon, ListView, SortView, EchoEvent, Vector, Search, DeleteImage, CardView, Previousbutton, pagination, Eventviewimage } from '../share/image';
+import { EditIcon, DeleteIcon, ListView, SortView, EchoEvent, Vector, Search, DeleteImage,Plus, CardView, Previousbutton, pagination, Eventviewimage } from '../share/image';
 import axios from 'axios'
 import SearchIn from './Search';
 import ListGroup from './Listgroup';
@@ -253,21 +253,15 @@ const EventList = () => {
 
                 </div>
                 <div className='row'>
-                    <div className='col col-sm-6 col-lg-6 col-md-6'>
+                    <div className='col-12 col-sm-6 col-lg-6 col-md-6'>
                         <h3>Events</h3>
                         <p>View and Manage Every Event of Future</p>
                     </div>
-                    <div className='manage-button-add-edit-filter col col-sm-6 col-lg-6 col-md-6'>
-                        <div className="filter-container" style={{ position: "relative", display: "inline-block" }}>
-                            <button className='filter-btn sort-event-btn' onClick={toggleFilterMenu}>
-                                <div className='d-flex'>
-                                    <div>
-                                        <img src={SortView} />
-                                    </div>
-                                    <div className='filter-event-button'>
-                                        <p>Filter</p>
-                                    </div>
-                                </div>
+                    <div className='col-12 col-sm-6 col-lg-6 col-md-6 d-flex justify-content-around'>
+                        <div className="filter-container" style={{ position: "relative" }}>
+                            <button className='filter-btn filter-event-btn' onClick={toggleFilterMenu}>
+                                 <img src={SortView} />
+                               <span className='filter-text-ev'> Filter </span>
                             </button>
 
                             {/* 🔽 Filter Options ListGroup Component */}
@@ -275,44 +269,35 @@ const EventList = () => {
                                 <ListGroup items={filterOptions} onSelectItem={handleFilterChange} />
                             )}
                         </div>
-                        <button className="list-event-btn">
+                      
                             <div>
                                 {
                                     listview ? (
                                         <>
-                                            <div onClick={handleListViewClose} className='event-filter-layout'>
-                                                <div>
+                                            <button onClick={handleListViewClose} className='card-event-view'>
                                                     <img src={CardView}
                                                     />
-                                                </div>
-                                                <div>
-                                                    <p className='event-card-p'>card view</p>
-                                                </div>
-                                            </div>
+                                                   <span className='card-view-text-ev'>Card View</span> 
+                                            </button>
                                         </>
                                     ) : (
                                         <>
-                                            <div onClick={handleListView} className='event-filter-layout'>
-                                                <div>
-                                                    <img src={ListView}
-
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <p className='event-list-p'>list view</p>
-                                                </div>
-                                            </div>
+                                          
+                                 <button  onClick={handleListView} className='List-event-view'>
+                                 <img src={ListView} />
+                                 <span className='list-view-text-ev'>List View</span>
+                            </button>
                                         </>
                                     )
 
                                 }
                             </div>
+                     <div>
+                        <button onClick={handleOpenModal} className='add-newevent-btn'>
+                           <img src={Plus} className='plus-icon'/>
+                            Add New Event
                         </button>
-                        <button className="add-event-btn" onClick={handleOpenModal}>
-                            Add Event <FaPlus
-                                style={{ color: "white" }}
-                            />
-                        </button>
+                        </div>
                     </div>
                 </div>
                 {

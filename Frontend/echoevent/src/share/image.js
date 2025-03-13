@@ -14,6 +14,7 @@ import CardView from '../imageecho/Card view.svg'
 import Eventviewimage from '../imageecho/Frame 11.svg'
 import Vector1 from '../imageecho/User.svg'
 import SearchIcon from '../imageecho/Vector.svg'
+import Plus from '../imageecho/Plus.svg'
 export{
     EditIcon,
     DeleteIcon,
@@ -30,5 +31,6 @@ export{
     CardView  ,
     Eventviewimage,
     Vector1,
-    SearchIcon
+    SearchIcon,
+    Plus
 }
